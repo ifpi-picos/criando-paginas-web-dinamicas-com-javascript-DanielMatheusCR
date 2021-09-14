@@ -1,34 +1,33 @@
-function leNotas () {
-  const notas = []
-  for (let index = 0; index < 3; index++) {
-    const nota = Math.random() * 10
-    console.log('nota ', index, ': ', nota)
-    notas = []
+const campoUfSelect = document.querySelector('#uf')
+const campoCidadeSelect = document.querySelector('#cidade')
+const btnSalvar = document.querySelector('#btnSalvar')
+
+const UFsECidades = new Map()
+UFsECidades.set(0, ['Selecione'])
+UFsECidades.set(1, ['Picos', 'Teresina', 'Inhuma', 'Parnaíba', 'Oeiras'])
+UFsECidades.set(2, ['Recife', 'Petrolina', 'Salgueiro'])
+UFsECidades.set(3, ['Brasília', 'Gama', 'Taguatinga', 'Paranoá'])
+
+campoUfSelect.addEventListener('change', () => {
+  limparCidades()
+
+  const cidades = UFsECidades.get(parseInt(campoUfSelect.value))
+
+  for(index=0; index<cidades.length; index++){
+    let Cidade = document.createElement('option')
+    Cidade.value = index
+    Cidade.text = cidades[index]
+    campoCidadeSelect.appendChild(Cidade)
   }
-  return notas
+})
+
+function limparCidades() {
+  campoCidadeSelect.innerHTML = '<option value="0">Selecione</option>'
 }
 
-function calculaMedia (notas) {
-  let soma = 0
-  for (let index = 0; index < notas.length; index++) {
-    soma = soma + notas[index]
-  }
-  const media = soma / notas.length
-  return media
-}
+btnSalvar.addEventListener("click", () => {
+  const estadoSelecionado = campoUfSelect.options[campoUfSelect.selectedIndex].text
+  const cidadeSelecionada = campoCidadeSelect.options[campoCidadeSelect.selectedIndex].text
 
-function vericaSituacaoDoAluno (media) {
-  if (media < 4) {
-    return 'Reprovado'
-  } else if (media < 7) {
-    return 'Recuperação'
-  } else {
-    return 'Aprovado'
-  }
-}
-
-const notas = leNotas()
-const media = calculaMedia(notas)
-console.log('A sua média final é: ', media)
-const situacaoDoAluno = vericaSituacaoDoAluno(media)
-console.log('Situação do aluno: ', situacaoDoAluno)
+  alert('UF: ' + estadoSelecionado + '\nCidade: ' + cidadeSelecionada + '\nSalvo com sucesso!')
+})
